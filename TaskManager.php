@@ -75,6 +75,12 @@ class TaskManager
         return true;
     }
     
+    /**
+     * Search for tasks. Every key is a field name and value is a field value.
+     * 
+     * @param array $params
+     * @return \Doctrine\Common\Collections\Collection
+     */
     public function search(array $params = array()) 
     {
         return $this->findBy($params);

@@ -1,0 +1,23 @@
+title:
+    tasks: Tasks
+    edit_task: Edit task
+
+label:
+    deadline: Deadline
+    reminder: Reminder
+    alert_date: Alert date
+    description: Description
+    save: Save
+
+btn:
+    create_new_task: Create new task
+    edit: Edit
+    remove: Remove
+    back_to_list: Back
+
+flash:
+    task_edited: Task saved!
+    task_not_found: Task does not exists or has been removed.
+    
+message:
+    no_tasks_found: No tasks found.

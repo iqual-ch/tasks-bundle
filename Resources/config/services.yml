@@ -1,0 +1,13 @@
+parameters:
+    task.manager.class: TasksBundle\TaskManager
+    task.edit_task_type.class: TasksBundle\Form\EditTaskType
+
+services:
+    tasks.edit_task_type:
+        class: %task.edit_task_type.class%
+        
+    task_manager:
+        class: %task.manager.class%
+        arguments: 
+            - @doctrine.orm.entity_manager
+            - %tasks.entity_class%

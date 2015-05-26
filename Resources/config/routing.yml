@@ -1,0 +1,3 @@
+tasks_default:
+    resource: "@TasksBundle/Controller/DefaultController.php"
+    type:     annotation

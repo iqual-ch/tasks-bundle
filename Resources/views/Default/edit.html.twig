@@ -1,0 +1,13 @@
+{% extends layout %}
+
+{% block content %}
+    <div class="page-header">{{ 'title.edit_task'|trans({}, 'TasksBundle') }}</div>
+    {% block tasks_pre_form %}
+    {% endblock %}
+    
+    {% block tasks_form %}
+    {{ form(form) }}
+    {% endblock %}
+    
+    {% block tasks_post_form '' %}
+{% endblock %}

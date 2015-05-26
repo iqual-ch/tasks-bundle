@@ -1,0 +1,50 @@
+{% extends layout %}
+
+{% block content %}
+    <div class="page-header">{{ 'title.tasks'|trans({}, 'TasksBundle') }}</div>
+    
+    <form class="well well-sm clearfix" action="{{ path('tasks_list') }}" method="get" id="filter-form">
+        {% block tasks_filters '' %}
+    </form>
+    
+    {% block tasks_table %}
+    {% if tasks|length > 0 %}
+    <table class="table table-striped table-condensed">
+        {% block tasks_table_head %}
+        <thead>
+            {% block tasks_table_head_row %}
+            <tr>
+                <th>{{ 'label.deadline'|trans({}, 'TasksBundle') }}</th>
+                <th>{{ 'label.description'|trans({}, 'TasksBundle') }}</th>
+                <th>{{ 'label.reminder'|trans({}, 'TasksBundle') }}</th>
+                <th>{{ 'label.alert_date'|trans({}, 'TasksBundle') }}</th>
+                <th class="text-right"><a href="{{ path('tasks_create') }}" class="btn btn-sm btn-primary">{{ 'btn.create_new_task'|trans({}, 'TasksBundle') }}</a></th>
+            </tr>
+            {% endblock %}
+        </thead>
+        {% endblock %}
+        
+        {% block tasks_table_body %}
+        <tbody>
+        {% for task in tasks %}
+            {% block tasks_table_body_row %}
+            <tr>
+                <td>{{ task.getDeadline|date('d.m.Y') }}</td>
+                <td>{{ task.getDescription }}</td>
+                <td>{{ task.getReminder }}</td>
+                <td>{{ task.getAlertDate|date('d.m.Y') }}</td>
+                <td class="text-right">
+                    <a href="{{ path('tasks_edit', {id: task.getId}) }}" class="btn btn-sm btn-default">{{ 'btn.edit'|trans({}, 'TasksBundle') }}</a>
+                    <a href="{{ path('tasks_remove', {id: task.getId}) }}" class="btn btn-sm btn-danger">{{ 'btn.remove'|trans({}, 'TasksBundle') }}</a>
+                </td>
+            </tr>
+            {% endblock %}
+        {% endfor %}
+        </tbody>
+        {% endblock %}
+    </table>
+    {% else %}
+        <div class="alert alert-info" style="margin-left: 0">{{ 'message.no_tasks_found'|trans({}, 'TasksBundle') }}</div>
+    {% endif %}
+    {% endblock %}
+{% endblock %}

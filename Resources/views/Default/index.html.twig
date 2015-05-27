@@ -44,7 +44,10 @@
         {% endblock %}
     </table>
     {% else %}
-        <div class="alert alert-info" style="margin-left: 0">{{ 'message.no_tasks_found'|trans({}, 'TasksBundle') }}</div>
+        <div class="alert alert-info" style="margin-left: 0">
+            {{ 'message.no_tasks_found'|trans({}, 'TasksBundle') }}
+            <a href="{{ path('tasks_create') }}" >{{ 'btn.create_new_task'|trans({}, 'TasksBundle') }}</a>
+        </div>
     {% endif %}
     {% endblock %}
 {% endblock %}

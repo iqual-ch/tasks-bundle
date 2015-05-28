@@ -6,7 +6,14 @@
     {% endblock %}
     
     {% block tasks_form %}
-    {{ form(form) }}
+        {% set submit = form_widget(form.submit) %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <div class="well well-small form-actions">
+            {{ submit|raw }}
+            <a href="{{ path('tasks_list') }}" class="btn btn-default">{{ 'btn.cancel'|trans({}, 'TasksBundle') }}</a>
+        </div>
+        {{ form_end(form) }}
     {% endblock %}
     
     {% block tasks_post_form '' %}

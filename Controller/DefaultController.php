@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\Request;
+use TasksBundle\Event\TaskEvent;
 
 /**
  * @Route("/tasks", name="tasks")
@@ -54,8 +55,10 @@ class DefaultController extends Controller
                 try {
                     $this->get('task_manager')->store($form->getData());
                     $this->addFlash('success', $this->get('translator')->trans('flash.task_edited', array(), 'TransBundle'));
+                    $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_EDITED, new TaskEvent($form->getData()));
                 } catch (Exception $e) {
                     $this->addFlash('error', $e->getMessage());
+                    $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_EDIT_ERROR, new TaskEvent($form->getData()));
                 }
             }
         }
@@ -71,7 +74,13 @@ class DefaultController extends Controller
      */
     public function removeAction($id)
     {
-        $this->get('task_manager')->remove($id);
+        $task = $this->get('task_manager')->find($id);
+        if ($task) {
+            $this->get('task_manager')->remove($id);
+            $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_DELETED, new TaskEvent($form->getData()));
+        } else {
+            $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_DELETE_ERROR, new TaskEvent($form->getData()));
+        }
         return $this->redirectToRoute('tasks_list');
     }
 }

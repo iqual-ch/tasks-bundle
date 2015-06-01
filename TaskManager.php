@@ -1,16 +1,18 @@
 <?php
 namespace TasksBundle;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Exception;
 
 class TaskManager
 {
     /**
      *
-     * @var ObjectManager
+     * @var EntityManager
      */
-    protected $objectManager;
+    protected $entityManager;
     
     /**
      *
@@ -20,12 +22,12 @@ class TaskManager
     
     /**
      * 
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      * @param string $entityClass
      */
-    public function __construct(ObjectManager $objectManager, $entityClass)
+    public function __construct(EntityManager $entityManager, $entityClass)
     {
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->entityClass = $entityClass;
     }
     
@@ -50,10 +52,10 @@ class TaskManager
      */
     public function store($object)
     {
-        if (!$this->objectManager->contains($object)) {
-            $this->objectManager->persist($object);
+        if (!$this->entityManager->contains($object)) {
+            $this->entityManager->persist($object);
         }
-        $this->objectManager->flush($object);
+        $this->entityManager->flush($object);
     }
     
     /**
@@ -70,8 +72,8 @@ class TaskManager
                 return false;
             }
         }
-        $this->objectManager->remove($object);
-        $this->objectManager->flush($object);
+        $this->entityManager->remove($object);
+        $this->entityManager->flush($object);
         return true;
     }
     
@@ -79,11 +81,29 @@ class TaskManager
      * Search for tasks. Every key is a field name and value is a field value.
      * 
      * @param array $params
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function search(array $params = array()) 
     {
         return $this->findBy($params);
+    }
+    
+    /**
+     * 
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+        return $this->entityManager->getRepository($this->entityClass)->createQueryBuilder('t');
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->entityClass;
     }
     
     /**
@@ -116,7 +136,7 @@ class TaskManager
     public function __call($name, $arguments)
     {
         return call_user_func_array(array(
-            $this->objectManager->getRepository($this->entityClass),
+            $this->entityManager->getRepository($this->entityClass),
             $name
         ), $arguments);
     }

@@ -8,9 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\MappedSuperclass(repositoryClass="TasksBundle\Entity\TaskRepository")
  */
-abstract class AbstractTask
+abstract class AbstractTask implements TaskInterface
 {
-
+    const STATUS_NOT_STARTED = 'not_started';
+    const STATUS_PENDING = 'pending';
+    const STATUS_OVERDUE = 'overdue';
+    const STATUS_DONE = 'done';
+    
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -41,6 +45,28 @@ abstract class AbstractTask
      * @var DateTime
      */
     protected $alertDate;
+    
+    /**
+     *
+     * @ORM\Column(type="string", length=127, nullable=true)
+     * @var string
+     */
+    protected $type;
+    
+    /**
+     *
+     * @ORM\Column(type="string", length=127, nullable=true)
+     * @var string
+     */
+    protected $status = self::STATUS_NOT_STARTED;
+    
+    /**
+     * 
+     */
+    public function __construct()
+    {
+        $this->status = self::STATUS_NOT_STARTED;
+    }
 
     /**
      *
@@ -130,6 +156,64 @@ abstract class AbstractTask
     public function setAlertDate(DateTime $alertDate)
     {
         $this->alertDate = $alertDate;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * 
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * 
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+    
+    /**
+     * 
+     * @return string[]
+     */
+    public static function getStatuses()
+    {
+        return array(
+            self::STATUS_NOT_STARTED, self::STATUS_PENDING, self::STATUS_OVERDUE, self::STATUS_DONE
+        );
+    }
+    
+    /**
+     * 
+     * @param string $status
+     * @param string $prefix
+     * @return string
+     */
+    public function prepareStatusName($status, $delimiter = '.', $prefix = '', $postfix = '')
+    {
+        return $prefix . $delimiter . $status . $delimiter . $postfix;
     }
 
 }

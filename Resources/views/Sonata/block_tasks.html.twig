@@ -1,0 +1,84 @@
+{% extends sonata_block.templates.block_base %}
+
+{% block block %}
+<div class="box">
+    <div class="box-header">
+        {% block tasks_block_header %}
+        <h4 class="box-title">{{ settings.title|trans }}</h4>
+        {% endblock %}
+    </div>
+    <div class="box-body">
+        {% block tasks_block_filters %}
+        <div class="clearfix">
+            <div class="row">
+                <div class="col-md-1" style="margin-bottom: 10px">
+                    <span class="label label-danger">22.05.2015</span>
+                </div>
+                <div class="col-md-4">
+                    <label class="radio-inline"><input type="checkbox" name="mine" /> {{ 'label.show_my_tasks_only'|trans({}, translation_domain) }}</label>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+        
+        {% block tasks_block_actions %}
+        <div class="well well-sm clearfix">
+            <div class="row">
+                <div class="col-md-3">
+                    <select name="status" class="inline">
+                        {% for status, status_name in statuses %}
+                        <option value="{{ status }}">{{ status_name|trans({}, translation_domain) }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <input type="button" value="{{ 'button.delete'|trans({}, translation_domain) }}" class="btn btn-sm btn-default" />
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+        
+        {% block tasks_block_table %}
+        <table class="table table-condensed table-striped">
+            {% block tasks_block_head %}
+            <thead>
+                {% block tasks_block_table_head_row %}
+                <tr>
+                    <th class="col-md-1">{{ 'label.select'|trans({}, translation_domain) }}</th>
+                    <th class="col-md-2">{{ 'label.due_date'|trans({}, translation_domain) }}</th>
+                    <th class="col-md-2">{{ 'label.task_type'|trans({}, translation_domain) }}</th>
+                    <th class="col-md-3">{{ 'label.description'|trans({}, translation_domain) }}</th>
+                    <th class="col-md-2">{{ 'label.status'|trans({}, translation_domain) }}</th>
+                    <th class="col-md-2">{{ 'label.task_owner'|trans({}, translation_domain) }}</th>
+                </tr>
+                {% endblock %}
+            </thead>
+            {% endblock %}
+            {% block tasks_block_table_body %}
+            <tbody>
+                {% for task in tasks %}
+                {% block tasks_block_table_body_row %}
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td>{{ task.getDeadline|date('d.m.Y') }}</td>
+                    <td>{{ task.getType|trans }}</td>
+                    <td><a href="{{ path('tasks_edit', {id: task.getId}) }}">{{ task.getDescription }}</a></td>
+                    <td>
+                        {% if task.getStatus != '' %}
+                        {% set task_status =  'task.status.' ~ task.getStatus %}
+                        {{ task_status|trans }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ task.getOwner }}</td>
+                </tr>
+                {% endblock %}
+                {% endfor %}
+            </tbody>
+            {% endblock %}
+        </table>
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

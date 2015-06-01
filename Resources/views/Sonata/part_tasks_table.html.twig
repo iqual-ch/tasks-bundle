@@ -1,0 +1,45 @@
+{% block tasks_block_table %}
+<table class="table table-condensed table-striped">
+    {% block tasks_block_head %}
+    <thead>
+        {% block tasks_block_table_head_row %}
+        <tr>
+            <th class="col-md-1">{{ 'label.select'|trans({}, translation_domain) }}</th>
+            <th class="col-md-2">{{ 'label.due_date'|trans({}, translation_domain) }}</th>
+            <th class="col-md-2">{{ 'label.task_type'|trans({}, translation_domain) }}</th>
+            <th class="col-md-3">{{ 'label.description'|trans({}, translation_domain) }}</th>
+            <th class="col-md-2">{{ 'label.status'|trans({}, translation_domain) }}</th>
+            <th class="col-md-2">{{ 'label.task_owner'|trans({}, translation_domain) }}</th>
+        </tr>
+        {% endblock %}
+    </thead>
+    {% endblock %}
+    {% block tasks_block_table_body %}
+    <tbody>
+        {% if tasks|length > 0 %}
+        {% for task in tasks %}
+        {% block tasks_block_table_body_row %}
+        <tr>
+            <td><input type="checkbox" /></td>
+            <td>{{ task.getDeadline|date('d.m.Y') }}</td>
+            <td>{{ task.getType|trans }}</td>
+            <td><a href="{{ path('tasks_edit', {id: task.getId}) }}">{{ task.getDescription|truncate(250) }}</a></td>
+            <td>
+                {% if task.getStatus != '' %}
+                {% set task_status =  'task.status.' ~ task.getStatus %}
+                {{ task_status|trans }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td>{{ task.getOwner }}</td>
+        </tr>
+        {% endblock %}
+        {% endfor %}
+        {% else %}
+            <tr><td colspan="6">{{ 'message.no_tasks_found'|trans({}, 'TasksBundle') }}</td></tr>
+        {% endif %}
+    </tbody>
+    {% endblock %}
+</table>
+{% endblock %}

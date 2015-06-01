@@ -5,6 +5,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Exception;
+use TasksBundle\Entity\TaskInterface;
 
 class TaskManager
 {
@@ -45,12 +46,12 @@ class TaskManager
         }
         return $object;
     }
-    
+
     /**
      * 
-     * @param object $object
+     * @param TaskInterface $object
      */
-    public function store($object)
+    public function store(TaskInterface $object)
     {
         if (!$this->entityManager->contains($object)) {
             $this->entityManager->persist($object);

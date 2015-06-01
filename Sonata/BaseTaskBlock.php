@@ -2,9 +2,11 @@
 
 namespace TasksBundle\Sonata;
 
+use DateTime;
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use TasksBundle\TaskManager;
@@ -18,15 +20,22 @@ class BaseTaskBlock extends BaseBlockService
     protected $taskManager;
     
     /**
+     *
+     * @var Request
+     */
+    protected $request;
+    
+    /**
      * 
      * @param string $name
      * @param EngineInterface $templating
      * @param TaskManager $taskManager
      */
-    public function __construct($name, EngineInterface $templating, TaskManager $taskManager)
+    public function __construct($name, EngineInterface $templating, TaskManager $taskManager, Request $request)
     {
         parent::__construct($name, $templating);
         $this->taskManager = $taskManager;
+        $this->request = $request;
     }
     
     /**
@@ -44,24 +53,17 @@ class BaseTaskBlock extends BaseBlockService
         
         $tasks = $qb->getQuery()->getResult();
         
-        $statuses = array(
-            'task.status.all'
-        );
-        
-        $entityStatuses = call_user_func_array(array($this->taskManager->getEntityClass(), 'getStatuses'), array());
-        foreach ($entityStatuses as $status) {
-            $statuses[$status] = 'task.status.' . $status;
-        }
-        
-        $settings = $blockContext->getSettings();
-        return $this->renderPrivateResponse($blockContext->getTemplate(), array(
+        $viewParams = array_replace_recursive(array(
             'block' => $blockContext->getBlock(),
             'block_context'  => $blockContext,
             'tasks' => $tasks,
-            'statuses' => $statuses,
-            'settings' => $settings,
+            'block_id' => $blockContext->getSetting('block_id'),
+            'settings' => $blockContext->getSettings(),
+            'now' => new DateTime,
             'translation_domain' => $blockContext->getSetting('translation_domain'),
-        ));
+        ), $blockContext->getSetting('view_params'));
+        
+        return $this->renderPrivateResponse($blockContext->getTemplate(), $viewParams);
     }
     
     /**
@@ -73,7 +75,9 @@ class BaseTaskBlock extends BaseBlockService
         $resolver->setDefaults(array(
             'title' => 'block.title.tasks',
             'template' => 'TasksBundle:Sonata:block_tasks.html.twig',
-            'translation_domain' => 'messages'
+            'translation_domain' => 'messages',
+            'block_id' => uniqid(),
+            'view_params' => array()
         ));
     }
 

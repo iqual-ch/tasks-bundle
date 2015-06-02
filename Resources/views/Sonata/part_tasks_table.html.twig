@@ -5,12 +5,10 @@
     <thead>
         {% block tasks_block_table_head_row %}
         <tr>
-            <th class="col-md-1">{{ 'label.select'|trans({}, translation_domain) }}</th>
             <th class="col-md-2">{{ 'label.due_date'|trans({}, translation_domain) }}</th>
             <th class="col-md-2">{{ 'label.task_type'|trans({}, translation_domain) }}</th>
             <th class="col-md-3">{{ 'label.description'|trans({}, translation_domain) }}</th>
             <th class="col-md-2">{{ 'label.status'|trans({}, translation_domain) }}</th>
-            <th class="col-md-2">{{ 'label.task_owner'|trans({}, translation_domain) }}</th>
         </tr>
         {% endblock %}
     </thead>
@@ -39,7 +37,6 @@
         
         {% block tasks_block_table_body_row %}
         <tr class="{{ row_class }}">
-            <td><input type="checkbox" /></td>
             <td>{{ task.getDeadline|date('d.m.Y') }}</td>
             <td>{{ task.getType|trans }}</td>
             <td><a href="{{ path('tasks_edit', {id: task.getId}) }}">{{ task.getDescription|truncate(250) }}</a></td>
@@ -51,7 +48,6 @@
                     -
                 {% endif %}
             </td>
-            <td>{{ task.getOwner }}</td>
         </tr>
         {% endblock %}
         {% endfor %}

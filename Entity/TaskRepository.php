@@ -36,4 +36,21 @@ class TaskRepository extends EntityRepository
         $qb->setParameters($values);
         return $qb->execute();
     }
+    
+    /**
+     * Get tasks which needs reminder sent.
+     * 
+     * @return TaskInterface[]
+     */
+    public function getTasksToRemind()
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->where("t.deadline <= DATE_ADD(CURRENT_DATE(), t.reminder, 'DAY') OR CURRENT_DATE() = t.alertDate");
+        $qb->andWhere('t.status = :status');
+        $qb->andWhere('t.owner IS NOT NULL');
+        $qb->andWhere('t.isReminderSent = 0 OR t.isReminderSent IS NULL');
+        $qb->setParameter('status', AbstractTask::STATUS_NOT_STARTED);
+        
+        return $qb->getQuery()->getResult();
+    }
 }

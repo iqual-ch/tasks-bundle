@@ -216,4 +216,8 @@ abstract class AbstractTask implements TaskInterface
         return $prefix . $delimiter . $status . $delimiter . $postfix;
     }
 
+    public function isOverdue()
+    {
+        return $this->deadline < new DateTime;
+    }
 }

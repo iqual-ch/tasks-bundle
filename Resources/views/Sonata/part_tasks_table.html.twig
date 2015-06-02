@@ -1,5 +1,6 @@
 {% block tasks_block_table %}
-<table class="table table-condensed table-striped">
+{% set overdue_line_drawed = false %}
+<table class="table table-condensed table-striped tasks-table">
     {% block tasks_block_head %}
     <thead>
         {% block tasks_block_table_head_row %}
@@ -17,9 +18,27 @@
     {% block tasks_block_table_body %}
     <tbody>
         {% if tasks|length > 0 %}
+        {% set task_in_past = false %}
         {% for task in tasks %}
+            {% if task.isOverdue %} 
+                {% set row_class = 'task-overdue' %}
+            {% else %} 
+                {% set row_class = '' %} 
+            {% endif %}
+            
+            
+            {% if task.isOverdue and overdue_line_drawed == false %}
+                {% set row_class = row_class ~ ' task-overdue-line' %}
+                {% set overdue_line_drawed = true %}
+            {% endif %}
+            
+            {% if task.isOverdue == false and overdue_line_drawed == true %}
+                {% set row_class = row_class ~ ' task-fresh-line' %}
+                {% set overdue_line_drawed = false %}
+            {% endif %}
+        
         {% block tasks_block_table_body_row %}
-        <tr>
+        <tr class="{{ row_class }}">
             <td><input type="checkbox" /></td>
             <td>{{ task.getDeadline|date('d.m.Y') }}</td>
             <td>{{ task.getType|trans }}</td>
@@ -42,4 +61,4 @@
     </tbody>
     {% endblock %}
 </table>
-{% endblock %}
+{% endblock %} 

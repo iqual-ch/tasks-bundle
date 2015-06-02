@@ -7,6 +7,9 @@ use Doctrine\ORM\QueryBuilder;
 use Exception;
 use TasksBundle\Entity\TaskInterface;
 
+/**
+ * @method mixed findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class TaskManager
 {
     /**
@@ -84,9 +87,9 @@ class TaskManager
      * @param array $params
      * @return Collection
      */
-    public function search(array $params = array()) 
+    public function search(array $params = array(), array $orderBy = null, $limit = null, $offset = null) 
     {
-        return $this->findBy($params);
+        return $this->findBy($params, $orderBy, $limit, $offset);
     }
     
     /**

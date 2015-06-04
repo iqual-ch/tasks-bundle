@@ -50,7 +50,6 @@ class TaskRepository extends EntityRepository
         $qb->andWhere('t.owner IS NOT NULL');
         $qb->andWhere('t.isReminderSent = 0 OR t.isReminderSent IS NULL');
         $qb->setParameter('status', AbstractTask::STATUS_NOT_STARTED);
-        
         return $qb->getQuery()->getResult();
     }
 }

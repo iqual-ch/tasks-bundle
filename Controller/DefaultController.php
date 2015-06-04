@@ -18,6 +18,7 @@ class DefaultController extends Controller
 
     /**
      * @Route("/", name="tasks_list")
+     * @Route("/filter", name="tasks_filter")
      */
     public function indexAction(Request $request)
     {

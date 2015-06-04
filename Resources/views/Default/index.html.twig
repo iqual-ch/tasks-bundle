@@ -3,7 +3,7 @@
 {% block content %}
     <div class="page-header">{{ 'title.tasks'|trans({}, 'TasksBundle') }}</div>
     
-    <form class="well well-sm clearfix" action="{{ path('tasks_list') }}" method="get" id="filter-form">
+    <form class="well well-sm clearfix" action="{{ path('tasks_filter') }}" method="get" id="filter-form">
         {% block tasks_filters '' %}
     </form>
     

@@ -60,6 +60,7 @@ class DefaultController extends Controller
                 } catch (Exception $e) {
                     $this->addFlash('error', $e->getMessage());
                     $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_EDIT_ERROR, new TaskEvent($form->getData()));
+                    $this->addFlash('error', $this->get('translator')->trans('flash.task_save_error', array(), 'TransBundle'));
                 }
             }
         }

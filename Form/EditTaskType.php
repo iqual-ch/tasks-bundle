@@ -23,8 +23,8 @@ class EditTaskType extends AbstractType
             'data' => (new DateTime('now + 1 week'))->format('d.m.Y')
         ));
 
-        $builder->add('reminder', 'number', array(
-            'label' => 'label.reminder',
+        $builder->add('remindIn', 'number', array(
+            'label' => 'label.remind_in_days',
             'translation_domain' => 'TasksBundle',
             'data' => 7
         ));

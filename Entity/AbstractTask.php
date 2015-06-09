@@ -35,10 +35,10 @@ abstract class AbstractTask implements TaskInterface
     protected $deadline;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", name="remind_in", nullable=true)
      * @var int
      */
-    protected $reminder;
+    protected $remindIn;
 
     /**
      * @ORM\Column(type="date", name="alert_date", nullable=true)
@@ -99,9 +99,9 @@ abstract class AbstractTask implements TaskInterface
      *
      * @return int
      */
-    public function getReminder()
+    public function getRemindIn()
     {
-        return $this->reminder;
+        return $this->remindIn;
     }
 
     /**
@@ -142,11 +142,11 @@ abstract class AbstractTask implements TaskInterface
 
     /**
      *
-     * @param int $reminder
+     * @param int $days
      */
-    public function setReminder($reminder)
+    public function setRemindIn($days)
     {
-        $this->reminder = $reminder;
+        $this->remindIn = $days;
     }
 
     /**

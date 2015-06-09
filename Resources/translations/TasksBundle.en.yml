@@ -4,7 +4,7 @@ title:
 
 label:
     deadline: Deadline
-    reminder: Reminder
+    remind_in_days: Remind in N days
     alert_date: Alert date
     description: Description
     save: Save
@@ -19,6 +19,7 @@ btn:
 flash:
     task_edited: Task saved!
     task_not_found: Task does not exists or has been removed.
+    task_save_error: There was an error saving your task.
     
 message:
     no_tasks_found: No tasks found.

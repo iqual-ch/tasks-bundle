@@ -36,6 +36,9 @@ class Configuration implements ConfigurationInterface
                         ->cannotBeEmpty()
                         ->defaultValue('TasksBundle::Default/edit.html.twig')
                     ->end()
+                    ->booleanNode('redirect_after_save')
+                        ->defaultValue(true)
+                    ->end()
                 ->end()
         ;
 

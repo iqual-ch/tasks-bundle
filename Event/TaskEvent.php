@@ -21,7 +21,7 @@ class TaskEvent extends Event
      * 
      * @param TaskInterface $task
      */
-    public function __construct(TaskInterface $task)
+    public function __construct(TaskInterface $task = null)
     {
         $this->task = $task;
     }

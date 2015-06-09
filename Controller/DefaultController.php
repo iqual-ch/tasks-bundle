@@ -40,7 +40,7 @@ class DefaultController extends Controller
         if ($id) {
             $task = $this->get('task_manager')->find($id);
             if (!$task) {
-                throw $this->createNotFoundException($this->get('translator')->trans('flash.task_not_found', array(), 'TransBundle'));
+                throw $this->createNotFoundException($this->get('translator')->trans('flash.task_not_found', array(), 'TasksBundle'));
             }
         } else {
             $task = $this->get('task_manager')->create();
@@ -55,12 +55,16 @@ class DefaultController extends Controller
             if ($form->isValid()) {
                 try {
                     $this->get('task_manager')->store($form->getData());
-                    $this->addFlash('success', $this->get('translator')->trans('flash.task_edited', array(), 'TransBundle'));
+                    $this->addFlash('success', $this->get('translator')->trans('flash.task_edited', array(), 'TasksBundle'));
                     $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_EDITED, new TaskEvent($form->getData()));
+                    
+                    if ($this->container->getParameter('tasks.redirect_after_save')) {
+                        return $this->redirectToRoute('tasks_list');
+                    }
                 } catch (Exception $e) {
                     $this->addFlash('error', $e->getMessage());
                     $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_EDIT_ERROR, new TaskEvent($form->getData()));
-                    $this->addFlash('error', $this->get('translator')->trans('flash.task_save_error', array(), 'TransBundle'));
+                    $this->addFlash('error', $this->get('translator')->trans('flash.task_save_error', array(), 'TasksBundle'));
                 }
             }
         }
@@ -79,9 +83,11 @@ class DefaultController extends Controller
         $task = $this->get('task_manager')->find($id);
         if ($task) {
             $this->get('task_manager')->remove($id);
-            $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_DELETED, new TaskEvent($form->getData()));
+            $this->addFlash('success', $this->get('translator')->trans('flash.task_removed', array(), 'TasksBundle'));
+            $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_DELETED, new TaskEvent($task));
         } else {
-            $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_DELETE_ERROR, new TaskEvent($form->getData()));
+            $this->addFlash('error', $this->get('translator')->trans('flash.task_remove_error', array(), 'TasksBundle'));
+            $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_DELETE_ERROR, new TaskEvent);
         }
         return $this->redirectToRoute('tasks_list');
     }

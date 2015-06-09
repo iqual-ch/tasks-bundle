@@ -18,8 +18,10 @@ btn:
 
 flash:
     task_edited: Task saved!
+    task_removed: Task removed!
     task_not_found: Task does not exists or has been removed.
-    task_save_error: There was an error saving your task.
+    task_save_error: There was an error saving task.
+    task_remove_error: There was an error removing task.
     
 message:
     no_tasks_found: No tasks found.

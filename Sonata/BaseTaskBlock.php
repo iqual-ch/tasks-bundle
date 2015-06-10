@@ -50,7 +50,7 @@ class BaseTaskBlock extends BaseBlockService
         if (is_callable($blockContext->getSetting('query_builder'))) {
             call_user_func_array($blockContext->getSetting('query_builder'), array($qb));
         }
-        
+       
         $tasks = $qb->getQuery()->getResult();
         
         $viewParams = array_replace_recursive(array(

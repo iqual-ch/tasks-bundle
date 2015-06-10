@@ -22,7 +22,11 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $tasks = $this->get('task_manager')->search($request->query->all());
+        $query = $request->query->all();
+        if (isset($query['_locale'])) {
+            unset($query['_locale']);
+        }
+        $tasks = $this->get('task_manager')->search($query);
         return $this->render($this->container->getParameter('tasks.template_list'), array(
             'tasks' => $tasks,
             'user' => $this->getUser(),

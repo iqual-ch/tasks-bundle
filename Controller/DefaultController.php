@@ -63,7 +63,11 @@ class DefaultController extends Controller
                     $this->get('event_dispatcher')->dispatch(TaskEvent::EVENT_EDITED, new TaskEvent($form->getData()));
                     
                     if ($this->container->getParameter('tasks.redirect_after_save')) {
-                        return $this->redirectToRoute('tasks_list');
+                        $redirectUrl = $this->generateUrl('tasks_list');
+                        if ($request->query->has('redirect')) {
+                            $redirectUrl = $request->query->get('redirect');
+                        }
+                        return $this->redirect($redirectUrl);
                     }
                 } catch (Exception $e) {
                     $this->addFlash('error', $e->getMessage());

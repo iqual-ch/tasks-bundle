@@ -78,6 +78,7 @@ class DefaultController extends Controller
         }
 
         return $this->render($this->container->getParameter('tasks.template_edit'), array(
+            'redirect' => $request->query->get('redirect', null),
             'form' => $form->createView(),
             'layout' => $this->container->getParameter('tasks.layout')
         ));

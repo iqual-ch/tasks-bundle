@@ -11,7 +11,12 @@
         {{ form_widget(form) }}
         <div class="well well-small form-actions">
             {{ submit|raw }}
-            <a href="{{ path('tasks_list') }}" class="btn btn-default">{{ 'btn.cancel'|trans({}, 'TasksBundle') }}</a>
+            
+            {% if redirect %}
+            <a href="{{ redirect }}" class="btn btn-default">{{ 'btn.cancel'|trans({}, 'TasksBundle') }}</a>    
+            {% else %}
+            <a href="{{ path('tasks_list') }}{% if redirect is not null %}?redirect={{ redirect }}{% endif %}" class="btn btn-default">{{ 'btn.cancel'|trans({}, 'TasksBundle') }}</a>
+            {% endif %}
         </div>
         {{ form_end(form) }}
     {% endblock %}

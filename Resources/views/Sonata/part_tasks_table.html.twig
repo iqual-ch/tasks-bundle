@@ -52,7 +52,7 @@
         {% endblock %}
         {% endfor %}
         {% else %}
-            <tr><td colspan="6">{{ 'message.no_tasks_found'|trans({}, 'TasksBundle') }}</td></tr>
+            <tr><td colspan="6">{{ 'message.no_tasks_found'|trans({}, translation_domain) }}</td></tr>
         {% endif %}
     </tbody>
     {% endblock %}

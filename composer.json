@@ -1,5 +1,5 @@
 {
-    "name": "mpom/tasks-bundle",
+    "name": "iqual/tasks-bundle",
     "type": "library",
     "autoload": {
         "psr-4": { "TasksBundle\\": "" }
